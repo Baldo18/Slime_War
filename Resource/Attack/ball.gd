@@ -25,4 +25,6 @@ func _on_VisibilityNotifier2D_screen_exited():
 
 
 func _on_ball_body_entered(body):
+	if "Enemy_slime_red" in body.name:
+		body.dead()
 	queue_free()

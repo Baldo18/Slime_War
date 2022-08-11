@@ -1,7 +1,12 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Resource/Enemy/Sprit/New Piskel.png" type="Texture" id=1]
 [ext_resource path="res://Resource/Enemy/Script/Enemy_slime_red.gd" type="Script" id=2]
+[ext_resource path="res://Resource/Enemy/Sprit/Slime_red.png" type="Texture" id=3]
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 3 )
+region = Rect2( 0, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 1 )
@@ -17,6 +22,11 @@ region = Rect2( 0, 32, 32, 32 )
 
 [sub_resource type="SpriteFrames" id=4]
 animations = [ {
+"frames": [ SubResource( 6 ) ],
+"loop": true,
+"name": "Dead",
+"speed": 5.0
+}, {
 "frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ) ],
 "loop": true,
 "name": "Walk",
@@ -33,10 +43,21 @@ script = ExtResource( 2 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 1, 0 )
 frames = SubResource( 4 )
-animation = "Walk"
+animation = "Dead"
 offset = Vector2( 2, 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 1, 2 )
 scale = Vector2( 2, 2 )
 shape = SubResource( 5 )
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+position = Vector2( 3, -2 )
+enabled = true
+cast_to = Vector2( 0, 12 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
