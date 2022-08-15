@@ -9,7 +9,7 @@ const gravity = 50
 var velocity=Vector2()
 var direction=1
 var is_dead=false
-var live= 5
+var live= 3
 
 
 func _ready():

@@ -7,6 +7,7 @@ const JUMP_H = -700
 const UP = Vector2(0, -1)
 const gravity = 40
 
+var jump=false
 var velocity=Vector2()
 var direction=1
 var motion = Vector2()
@@ -22,7 +23,7 @@ func _physics_process(delta):
 	
 	#Este if sirve para ir hacia la derecha
 	if Input.is_action_pressed("ui_right"):
-		if is_attacking==false:
+		if is_attacking==false and jump==false:
 			$AnimatedSprite.flip_h=false
 			$AnimatedSprite.play("Walk")
 			motion.x = min(motion.x + ACCELERATION, MAX_SPEED)
@@ -31,7 +32,7 @@ func _physics_process(delta):
 				
 	#Este elif sirve para ir a la izquierda
 	elif Input.is_action_pressed("ui_left"):
-		if is_attacking==false:
+		if is_attacking==false and jump==false:
 			$AnimatedSprite.flip_h=true
 			$AnimatedSprite.play("Walk")
 			motion.x = max(motion.x - ACCELERATION, -MAX_SPEED)
@@ -40,7 +41,7 @@ func _physics_process(delta):
 		
 	#este else es para cuando el personaje este quieto	
 	else:
-		if is_attacking==false:
+		if is_attacking==false and jump==false:
 			$AnimatedSprite.play("Idle")
 			friction = true
 		 
@@ -61,8 +62,10 @@ func _physics_process(delta):
 	#Este para el salto
 	if is_on_floor():
  
-		if Input.is_action_just_pressed("ui_accept"):
+		if Input.is_action_just_pressed("ui_up") :
+			$AnimatedSprite.play("Jump")
 			motion.y = JUMP_H
+			jump=true
 		if friction == true:
 			motion.x = lerp(motion.x, 0, 0.5)
 	else:
@@ -75,3 +78,4 @@ func _physics_process(delta):
 
 func _on_AnimatedSprite_animation_finished():
 	is_attacking=false
+	jump=false
